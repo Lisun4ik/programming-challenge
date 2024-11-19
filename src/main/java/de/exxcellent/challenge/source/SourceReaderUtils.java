@@ -24,10 +24,10 @@ public class SourceReaderUtils {
     /**
      * Chooses the right solution for the given source and reads the data.
      *
-     * @param source
-     * @param type
-     * @return
-     * @throws Exception
+     * @param source the source to be read
+     * @param type the type of source
+     * @return the records of the given source
+     * @throws Exception Exception, if occurs
      */
     public static Object readData(String source, SourceType type) throws Exception {
         switch (type) {
@@ -45,13 +45,14 @@ public class SourceReaderUtils {
     /**
      * Reads the data from a SCV-file and returns the content.
      *
-     * @param filePath
-     * @return
-     * @throws IOException
+     * @param filePath the path of the file to be read
+     * @return the records of the given file
+     * @throws IOException IOException, if occurs
      */
     private static Object readCsvFile(String filePath) throws IOException {
         List<Map<String, String>> records = new ArrayList<>();
         try (Reader reader = Files.newBufferedReader(Path.of(filePath))) {
+            // todo: this method is deprecated, find an other solution
             Iterable<CSVRecord> csvRecords = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
             for (CSVRecord csvRecord : csvRecords) {
                 records.add(csvRecord.toMap());
@@ -63,9 +64,9 @@ public class SourceReaderUtils {
     /**
      * Reads the data from a JSON-file and returns the content.
      *
-     * @param filePath
-     * @return
-     * @throws IOException
+     * @param filePath the path of the file to be read
+     * @return the records of the given file
+     * @throws IOException IOException, if occurs
      */
     private static Object readJsonFile(String filePath) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -75,9 +76,9 @@ public class SourceReaderUtils {
     /**
      * Reads the data from a web service and returns the content
      *
-     * @param url
-     * @return
-     * @throws IOException
+     * @param url the url of the web service to be read
+     * @return the records of the given web service
+     * @throws IOException IOException, if occurs
      */
     private static Object readFromWeb(String url) throws IOException {
         return Request.get(URI.create(url)).execute().returnContent().asString();
