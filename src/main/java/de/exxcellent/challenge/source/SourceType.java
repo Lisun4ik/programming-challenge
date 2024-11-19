@@ -15,6 +15,6 @@ public enum SourceType {
     /**
      * web service
      */
-    WEB;
+    WEB
 
 }
