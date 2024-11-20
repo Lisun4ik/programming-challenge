@@ -1,9 +1,12 @@
 package de.exxcellent.challenge.source;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.exxcellent.challenge.App;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.hc.client5.http.fluent.Request;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +23,7 @@ import java.util.Map;
  * The source-type should be known to use this class.
  */
 public class SourceReaderUtils {
+    private static Logger logger = LogManager.getLogger(App.class);
 
     /**
      * Chooses the right solution for the given source and reads the data.
@@ -50,15 +54,17 @@ public class SourceReaderUtils {
      * @throws IOException IOException, if occurs
      */
     private static Object readCsvFile(String filePath) throws IOException {
-        List<Map<String, String>> records = new ArrayList<>();
+        logger.info("readCsvFile - START");
+        List<Map<String, String>> result = new ArrayList<>();
         try (Reader reader = Files.newBufferedReader(Path.of(filePath))) {
             // todo: this method is deprecated, find an other solution
             Iterable<CSVRecord> csvRecords = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
             for (CSVRecord csvRecord : csvRecords) {
-                records.add(csvRecord.toMap());
+                result.add(csvRecord.toMap());
             }
         }
-        return records;
+        logger.info("readCsvFile - END");
+        return result;
     }
 
     /**
@@ -69,8 +75,11 @@ public class SourceReaderUtils {
      * @throws IOException IOException, if occurs
      */
     private static Object readJsonFile(String filePath) throws IOException {
+        logger.info("readJsonFile - START");
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(new File(filePath), Map.class);
+        Object result = objectMapper.readValue(new File(filePath), Map.class);
+        logger.info("readJsonFile - END");
+        return result;
     }
 
     /**
@@ -81,7 +90,10 @@ public class SourceReaderUtils {
      * @throws IOException IOException, if occurs
      */
     private static Object readFromWeb(String url) throws IOException {
-        return Request.get(URI.create(url)).execute().returnContent().asString();
+        logger.info("readFromWeb - START");
+        Object result = Request.get(URI.create(url)).execute().returnContent().asString();
+        logger.info("readFromWeb - END");
+        return result;
     }
 
 }
