@@ -49,7 +49,7 @@ public class DataAnalysis implements IDataAnalysis<List<Map<String, String>>> {
                 .map(Map.Entry::getKey)           // get the key
                 .orElse(null);
 
-        logger.info("getMinDiffEntryOfData - End");
+        logger.info("getMinDiffEntryOfData - END");
 
         return result;
     }
