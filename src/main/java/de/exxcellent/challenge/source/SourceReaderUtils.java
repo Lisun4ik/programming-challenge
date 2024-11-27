@@ -1,5 +1,6 @@
 package de.exxcellent.challenge.source;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.exxcellent.challenge.App;
 import org.apache.commons.csv.CSVFormat;
@@ -23,13 +24,13 @@ import java.util.Map;
  * The source-type should be known to use this class.
  */
 public class SourceReaderUtils {
-    private static Logger logger = LogManager.getLogger(App.class);
+    private final static Logger logger = LogManager.getLogger(App.class);
 
     /**
      * Chooses the right solution for the given source and reads the data.
      *
      * @param source the source to be read
-     * @param type the type of source
+     * @param type   the type of source
      * @return the records of the given source
      * @throws Exception Exception, if occurs
      */
@@ -42,7 +43,7 @@ public class SourceReaderUtils {
             case WEB:
                 return readFromWeb(source);
             default:
-                throw new IllegalArgumentException("Unsupported type: " + type);
+                throw new IllegalArgumentException("unsupported type: " + type);
         }
     }
 
@@ -53,7 +54,7 @@ public class SourceReaderUtils {
      * @return the records of the given file
      * @throws IOException IOException, if occurs
      */
-    private static Object readCsvFile(String filePath) throws IOException {
+    private static List<Map<String, String>> readCsvFile(String filePath) throws IOException {
         logger.info("readCsvFile - START");
         List<Map<String, String>> result = new ArrayList<>();
         try (Reader reader = Files.newBufferedReader(Path.of(filePath))) {
@@ -74,10 +75,10 @@ public class SourceReaderUtils {
      * @return the records of the given file
      * @throws IOException IOException, if occurs
      */
-    private static Object readJsonFile(String filePath) throws IOException {
+    private static List<Map<String, String>> readJsonFile(String filePath) throws IOException {
         logger.info("readJsonFile - START");
         ObjectMapper objectMapper = new ObjectMapper();
-        Object result = objectMapper.readValue(new File(filePath), Map.class);
+        List<Map<String, String>> result = objectMapper.readValue(new File(filePath), new TypeReference<>() {});
         logger.info("readJsonFile - END");
         return result;
     }
