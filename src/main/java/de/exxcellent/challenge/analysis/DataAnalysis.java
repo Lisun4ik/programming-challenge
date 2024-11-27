@@ -1,5 +1,6 @@
-package de.exxcellent.challenge;
+package de.exxcellent.challenge.analysis;
 
+import de.exxcellent.challenge.App;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -7,8 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DataAnalysis {
-    private static Logger logger = LogManager.getLogger(App.class);
+/**
+ * Implementation for data analysis according to <List<Map<String, String>>>
+ */
+public class DataAnalysis implements IDataAnalysis<List<Map<String, String>>> {
+
+    private final static Logger logger = LogManager.getLogger(App.class);
 
     /**
      * Returns the entry with the minimum absolute difference from a list of entries.
@@ -19,7 +24,8 @@ public class DataAnalysis {
      * @param captionOfVal2 the caption of the second value to compare
      * @return the identifier with minimum difference
      */
-    public static String getMinDiffEntryOfData(List<Map<String, String>> sourceData, String captionOfId, String captionOfVal1, String captionOfVal2) {
+    @Override
+    public String getMinDiffEntryOfData(List<Map<String, String>> sourceData, String captionOfId, String captionOfVal1, String captionOfVal2) {
         logger.info("getMinDiffEntryOfData - START");
         Map<String, Integer> diffList = new HashMap<>();
         for (Map<String, String> data : sourceData) {
@@ -46,6 +52,5 @@ public class DataAnalysis {
         logger.info("getMinDiffEntryOfData - End");
 
         return result;
-
     }
 }
