@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * conversion of given data to provide test files
+ * conversion of given data to provide tests
  */
 public class DataConverter {
     private final static Logger logger = LogManager.getLogger(App.class);
@@ -22,11 +22,11 @@ public class DataConverter {
      * @param list     list of entries
      * @param fileName name of new JSON file
      */
-    public static void writeCSVDataToJsonFile(List<Map<String, String>> list, String fileName) {
+    public static void writeDataToJsonFile(List<Map<String, String>> list, String fileName) {
         logger.info("writeCSVDataToJsonFile - START");
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            // JSON in Datei schreiben
+            // write JSON in file
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(fileName), list);
             logger.info("JSON was successfully written to the file: " + fileName);
         } catch (IOException e) {
@@ -34,5 +34,4 @@ public class DataConverter {
         }
         logger.info("writeCSVDataToJsonFile - END");
     }
-
 }

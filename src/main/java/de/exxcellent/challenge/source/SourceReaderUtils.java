@@ -90,9 +90,11 @@ public class SourceReaderUtils {
      * @return the records of the given web service
      * @throws IOException IOException, if occurs
      */
-    private static Object readFromWeb(String url) throws IOException {
+    private static List<Map<String, String>> readFromWeb(String url) throws IOException {
         logger.info("readFromWeb - START");
-        Object result = Request.get(URI.create(url)).execute().returnContent().asString();
+        String jsonStr = Request.get(URI.create(url)).execute().returnContent().asString();
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Map<String, String>> result = objectMapper.readValue(jsonStr, new TypeReference<>() {});
         logger.info("readFromWeb - END");
         return result;
     }
