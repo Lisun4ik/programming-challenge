@@ -13,9 +13,6 @@ public class SourceStringUtils {
      * @return full path of file
      */
     public static String getSourceString(String fileName, SourceType type) {
-        if (SourceType.CSV.equals(type) || SourceType.JSON.equals(type)) {
-            return Constants.filePath.concat(fileName).concat(".").concat(type.name());
-        }
-        return fileName;
+        return Constants.filePath.concat(fileName).concat(".").concat(type.name());
     }
 }

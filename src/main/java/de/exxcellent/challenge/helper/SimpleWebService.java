@@ -25,8 +25,8 @@ public class SimpleWebService {
         logger.info("**** simple web service started! ****");
         try {
             // prepare data
-            List<Map<String, String>> csvDataWeather = (List<Map<String, String>>) SourceReaderUtils.readData(SourceStringUtils.getSourceString(Constants.weatherFileName, SourceType.CSV), SourceType.CSV);
-            createWebService(csvDataWeather);
+            List<Map<String, String>> weatherData = (List<Map<String, String>>) SourceReaderUtils.readData(SourceStringUtils.getSourceString(Constants.weatherFileName, SourceType.CSV), SourceType.CSV);
+            startWebService(weatherData);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -38,7 +38,7 @@ public class SimpleWebService {
      * @param list list of entries
      * @throws IOException
      */
-    public static void createWebService(List<Map<String, String>> list) throws IOException {
+    public static void startWebService(List<Map<String, String>> list) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
 
         server.createContext("/test", exchange -> {
